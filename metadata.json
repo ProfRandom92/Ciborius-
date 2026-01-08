@@ -1,0 +1,9 @@
+{
+  "name": "Alexander Kölnberger - Security Digital Ops",
+  "description": "A professional portfolio and digital operations dashboard for Alexander Kölnberger, bridging traditional security with AI-driven project management for Ciborius and the Bundeswehr.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone",
+    "geolocation"
+  ]
+}

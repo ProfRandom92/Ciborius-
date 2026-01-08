@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alexander Kölnberger - Security Digital Ops</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap');
+        
+        :root {
+            --bw-blue: #1e3a8a;
+            --bw-blue-light: #3b82f6;
+            --ciborius-red: #ef4444;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            scroll-behavior: smooth;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        ::selection {
+            background-color: rgba(59, 130, 246, 0.2);
+            color: #1e3a8a;
+        }
+
+        .font-mono-terminal {
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .bg-grid-slate-100 {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32' width='32' height='32' fill='none' stroke='rgb(241 245 249 / 1)'%3E%3Cpath d='M0 .5H31.5V32'/%3E%3C/svg%3E");
+        }
+
+        /* Custom scrollbar */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 5px;
+            height: 5px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 10px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+
+        /* Terminal scanline effect */
+        @keyframes scanline {
+            0% { transform: translateY(-100%); }
+            100% { transform: translateY(100%); }
+        }
+
+        .terminal-scanline {
+            pointer-events: none;
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to bottom, transparent 50%, rgba(59, 130, 246, 0.03) 50%);
+            background-size: 100% 4px;
+            animation: scanline 8s linear infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        .cursor-blink {
+            display: inline-block;
+            width: 8px;
+            height: 1.2em;
+            background-color: currentColor;
+            margin-left: 2px;
+            animation: blink 1s step-end infinite;
+            vertical-align: middle;
+        }
+
+        /* Smooth reveal transitions */
+        .reveal-on-scroll {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        .reveal-on-scroll.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Tactical decorative elements */
+        .corner-accent::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 10px;
+            height: 10px;
+            border-top: 2px solid currentColor;
+            border-left: 2px solid currentColor;
+            opacity: 0.5;
+        }
+    </style>
+    <script type="importmap">
+    {
+      "imports": {
+        "react-dom/": "https://esm.sh/react-dom@^19.2.3/",
+        "recharts": "https://esm.sh/recharts@^3.6.0",
+        "@google/genai": "https://esm.sh/@google/genai@^1.34.0",
+        "react/": "https://esm.sh/react@^19.2.3/",
+        "react": "https://esm.sh/react@^19.2.3"
+      }
+    }
+    </script>
+</head>
+<body class="bg-white text-slate-900 selection:bg-blue-100 selection:text-blue-900 overflow-x-hidden">
+    <div id="root"></div>
+    <script>
+        // Simple Intersection Observer for reveal animations
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        // Polling for elements added dynamically by React
+        const pollForElements = setInterval(() => {
+            const elements = document.querySelectorAll('.reveal-on-scroll');
+            if (elements.length > 0) {
+                elements.forEach(el => observer.observe(el));
+            }
+        }, 1000);
+    </script>
+</body>
+</html>
